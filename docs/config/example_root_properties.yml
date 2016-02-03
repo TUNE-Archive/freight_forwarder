@@ -1,0 +1,34 @@
+---
+# team name
+team: "itops"
+
+# current project
+project: "cia"
+
+# git repo
+repository: "git@github.com:Adapp/cia.git"
+
+# Service definition
+api:
+  build: "./"
+  test: "./tests/"
+  ports:
+      - "8000:8000"
+
+# environments object is collection of environments and data centers
+environments:
+
+  # development environment
+  development:
+
+    # local datacenter
+    local:
+
+    # sea1 data center
+    sea1:
+
+  # staging environment
+  staging:
+
+  # production environment
+  production:

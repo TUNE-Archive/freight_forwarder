@@ -1,0 +1,46 @@
+---
+environments:
+
+  # define development environment.
+  development:
+
+    # define local datacenter.
+    local:
+
+      # define hosts for development local.
+      hosts:
+
+        # define default hosts.
+        default:
+          - address: "https://192.168.99.100:2376"
+            sslCertPath: "/Users/alexb/.docker/machine/machines/ff01-dev"
+            verify: false
+
+         # define host to use during export
+         export:
+           - address: "https://your-ci-server.sea1.office.priv:2376"
+             sslCertPath: "/path/to/your/certs/"
+             verify: false
+
+      # define deploy command orderides
+      deploy:
+
+        # override ui service properties.
+        ui:
+          image: registry_alias/itops/cia-ui:local-development-latest
+          volumes:
+            - /var/tune/cia-ui/public/
+
+        # override static-assets service properties.
+        static-assets:
+          image: registry_alias/itops/cia-static-assets:local-development-latest
+          volumes:
+            -  /static/
+          volumes_from: []
+
+      export:
+        ui:
+          export_to: registry_alias
+
+        static-assets:
+          export_to: registry_alias

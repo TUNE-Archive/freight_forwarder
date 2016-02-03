@@ -1,0 +1,49 @@
+---
+team: "tune_platform"
+project: "freight-forwarder"
+repository: "git@github.com:Adapp/cia.git"
+
+wheel:
+  build: ./
+  test: ./tests/
+
+  cmd:
+    - info
+
+#TODO: implment a release container that will do a volumes from wheel and push package to pypi
+release:
+  build: ./docker/release/Dockerfile
+
+docs:
+  build: ./docs/Dockerfile
+
+proxy:
+  build: ./docker/proxy/Dockerfile
+  ports:
+    - "8080:80"
+
+  volumes_from:
+    - docs
+
+environments:
+
+  alexb: &alexb
+    address: "https://172.16.135.137:2376"
+    ssl_cert_path: "/Users/alexb/.docker/machine/machines/ff02-dev"
+    verify: false
+
+  davidr: &davidr
+    address: "https://192.168.99.100:2376"
+    ssl_cert_path: "/Users/davidr/.docker/machine/machines/dev"
+    verify: false
+    
+  joshy: &joshy
+    address: "https://192.168.99.100:2376"
+    ssl_cert_path: "/Users/joshy/.docker/machine/machines/default"
+    verify: false
+
+  development:
+    local:
+      hosts:
+        default:
+          - *alexb

@@ -1,0 +1,66 @@
+---
+################################################################################
+# As described below, you can build and deploy images
+# for mdhq/rabbitmq-rabbit1:sea-development-<tags>, which means:
+# Environment: development; Datacenter: sea1; Hosts: devbox.
+#
+# Assuming you were in the mdhq-rabbitmq repo (as set below) with a Dockerfile
+# in the root of the repo, the command to build/push (export) an image on
+# devbox would be:
+#
+#   freight-forwarder export \
+#     --environment development \
+#     --data-center sea1 \
+#     --service rabbit1 \
+#     --tag latest
+#
+# The command to deploy to devbox would be:
+#
+#   freight-forwarder deploy \
+#     --environment development \
+#     --data-center sea1 \
+#     --service rabbit1
+################################################################################
+
+# Team name
+team: "mdhq"
+
+# Current project
+project: "rabbitmq"
+
+# Git repo for the project
+repository: "git@github.com:MobileDevHQ/mdhq-rabbitmq.git"
+
+# Global service definitions
+rabbit1:
+  build: ./
+  detach: true
+
+registries:
+  default:
+    address: "https://docker-dev.ops.tune.com"
+    verify: false
+
+# This defines an environment -> datacenter -> hosts + action hierarchy.
+# Because we have not defined a host override for the export command, we'll use
+# the default host to run the build and deploy to.
+environments:
+  # Environments
+  development:
+    # Datacenters
+    sea1:
+      # Hosts
+      hosts:
+        default:
+          - address: "http://your-docker-host.sea1.office.priv:2375"
+            verify: false
+      # Actions
+      deploy:
+        rabbit1:
+          image: development/mdhq/rabbitmq-rabbit1:sea1-development-latest
+          ports:
+            - "5672:5672"
+    # Service configs
+    rabbit1:
+      env_vars:
+        - "RABBIT_ENV=production"

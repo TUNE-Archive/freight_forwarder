@@ -1,0 +1,33 @@
+---
+registries:
+
+  registry_alias: &registry_alias
+    address: https://docker-registry-example.com
+    ssl_cert_path: /path/to/certs
+    verify: false
+
+  default: *registry_alias
+
+environments:
+  production:
+    # define datacenter
+    us-west-02:
+
+      # define deploy action
+      deploy:
+
+        # deployment overrides for static-assets
+        static-assets:
+          image: registry_alias/itops/cia-static-assets:latest
+          volumes:
+            - /static/
+          volumes_from: []
+          restart_policy: null
+
+        # deployment overrides for api
+        api:
+          image: registry_alias/itops/cia-api:o-ciapi03-2b-production-latest
+
+        # deployment overrides for nginx
+        nginx:
+          image: registry_alias/itops/cia-nginx:us-west-02-production-latest

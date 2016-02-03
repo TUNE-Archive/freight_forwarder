@@ -1,0 +1,14 @@
+---
+registries:
+  # registry definition
+  default:
+    address: "https://example-docker-registry.com"
+    ssl_cert_path: /path/to/certs
+    verify: false
+
+    # optional: required if using registry rubber.
+    auth:
+      type: "registry_rubber"
+      address: "https://o-regrubber-sea1.ops.tune.com"
+      ssl_cert_path: "/etc/docker/certs/registry/build"
+      verify: false

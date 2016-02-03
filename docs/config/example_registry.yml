@@ -1,0 +1,6 @@
+---
+registries:
+  # registry definition
+  default:
+    address: "https://docker-dev.ops.tune.com"
+    verify: false

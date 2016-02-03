@@ -1,0 +1,13 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+source = tune_registry
+
+[report]
+ignore_errors = True
+
+[html]
+directory = coverage_report
+
+[xml]
+directory = coverage_report

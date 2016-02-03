@@ -1,0 +1,22 @@
+# define
+registries:
+  # define development registry
+  tune_development: &default_registry
+    address: "https://example_docker_registry"
+    verify: false
+
+  # define production registry
+  tune_production:
+    address: "https://o-pregister-sea1.ops.tune.com"
+    ssl_cert_path: /path/to/certs
+    verify: false
+
+    # define auth for production registry
+    auth:
+        type: "registry_rubber"
+        address: "https://o-regrubber-sea1.ops.tune.com"
+        ssl_cert_path: /path/to/certs
+        verify: false
+
+  # define default registry. If this isn't defined default will be docker_hub.
+  default: *default_registry

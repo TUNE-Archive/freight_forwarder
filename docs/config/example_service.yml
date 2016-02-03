@@ -1,0 +1,17 @@
+---
+# service alias.
+couchdb:
+
+  # Docker image to use for service.
+  image: "registry_alias/itops/cia-couchdb:local-development-latest"
+
+  # Path to Dockerfile.
+  build: ./docker/couchdb/Dockerfile
+
+  # Synonyms with -d from the docker cli.
+  detach: true
+
+  # Synonyms with -p from the docker cli.
+  ports:
+    - "6984:6984"
+    - "5984:5984"

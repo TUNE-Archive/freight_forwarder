@@ -1,0 +1,32 @@
+---
+# environments
+environments:
+  production:
+  # datacenter definition
+    us-west-02:
+      # hosts for us-west-02
+      hosts:
+
+        # default hosts
+        default:
+          - address: "https://dev_hostname:2376"
+            ssl_cert_path: /path/to/certs
+            verify: false
+
+        # host specific to the export action. will default to hosts defined in
+        # default if not provided.
+        export:
+          - address: "https://127.0.0.1:2376"
+            ssl_cert_path: /path/to/certs
+            verify: false
+
+      # overrides for the export action.
+      export:
+
+        # api service export specific overrides.
+        api:
+          env_vars:
+            - APP_ENV=production
+
+          # specify what registry to export to.
+          export_to: registry_alias

@@ -1,0 +1,44 @@
+---
+environments:
+
+  # define development environment
+  development:
+
+    # define local datacenter.
+    local:
+
+      # define development local hosts.
+      hosts:
+
+        # define default hosts
+        default:
+          - address: "https://192.168.99.100:2376"
+            ssl_cert_path: /path/to/certs
+            verify: false
+
+      # override api service APP_ENV environment variable for development local.
+      api:
+        env_vars:
+          - "APP_ENV=development"
+
+  # define production environment
+  production:
+
+    # define production hosts
+    hosts:
+      # define hosts specificly for the api service.
+      api:
+        - address: "https://192.168.99.102:2376"
+          ssl_cert_path: /path/to/certs
+          verify: false
+
+      # define default hosts
+      default:
+        - address: "https://192.168.99.101:2376"
+          ssl_cert_path: /path/to/certs
+          verify: false
+
+    # override api service APP_ENV environment variable for production.
+    api:
+      env_vars:
+        - "APP_ENV=production"

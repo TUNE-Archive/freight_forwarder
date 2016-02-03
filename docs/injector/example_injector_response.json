@@ -1,0 +1,19 @@
+[
+  {
+    "name": "myconf.json",
+    "path": "/opt/docker-example/conf",
+    "config_path": "/configs/myconf.json",
+    "user": "root",
+    "group": "root",
+    "chmod": 755,
+    "checksum": "5cdfd05adb519372bd908eb5aaa1a203",
+    "notifications": {
+      "info": [
+        {
+          "type": "configs",
+          "details": "Template has not changed. Returning previous config."
+        }
+      ]
+    }
+  }
+]

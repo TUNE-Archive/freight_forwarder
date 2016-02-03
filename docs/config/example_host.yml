@@ -1,0 +1,26 @@
+---
+# development environment definition.
+development:
+  # development environment local datacenter definition.
+  local:
+
+    # hosts definition.
+    hosts:
+
+      # default hosts.
+      default:
+        - address: "https://192.168.99.100:2376"
+          ssl_cert_path: /path/to/certs
+          verify: false
+
+      # host to build and export from.
+      export:
+        - address: "https://192.168.99.120:2376"
+          ssl_cert_path: /path/to/certs
+          verify: false
+
+      # specific hosts for the api service.
+      api:
+        - address: "https://192.168.99.110:2376"
+          ssl_cert_path: /path/to/certs
+          verify: false

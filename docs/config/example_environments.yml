@@ -1,0 +1,33 @@
+---
+# environments object definition
+environments:
+  # define a host as a variable to use later
+  boot2docker: &boot2docker
+    - address: "https://192.168.99.100:2376"
+      ssl_cert_path: /path/to/certs
+      verify: false
+
+  # override api service APP_ENV environment variable.
+  api:
+    env_vars:
+      - "APP_ENV=development"
+
+  # define development environment
+  development:
+
+    # define local datacenter for development
+    local:
+      hosts:
+        default: *boot2docker
+
+  # define staging environment
+  staging:
+
+    # define staging datacenter in sea1
+    sea1: {}
+
+  # define production environment
+  production:
+
+    # define us-east-01 for production datacenter.
+    us-east-01: {}

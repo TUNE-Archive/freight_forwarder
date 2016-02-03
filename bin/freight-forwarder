@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+# -*- coding: utf-8; -*-
+from __future__ import unicode_literals
+import argparse
+import time
+import sys
+import os
+
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
+from freight_forwarder.const               import VERSION
+from freight_forwarder.cli.deploy          import DeployCommand
+from freight_forwarder.cli.export          import ExportCommand
+from freight_forwarder.cli.info            import InfoCommand
+from freight_forwarder.cli.marshaling_yard import MarshalingYardCommand
+from freight_forwarder.cli.quality_control import QualityControlCommand
+from freight_forwarder.cli.test            import TestCommand
+from freight_forwarder.cli.offload         import OffloadCommand
+from freight_forwarder.utils               import logger
+
+
+def main():
+    """
+    This is the main function to be executed when running the freight_forwarder cli.
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--version',
+                        action='version',
+                        version='%s is current on version : %s' % (parser.prog, VERSION),
+                        help='freight_forwarder version')
+    # Create sub parser
+    sub_parser = parser.add_subparsers(
+        title='freight-forwarder',
+        description='Freight Forwarder is an orchestration tool to help build test and deploy Docker images and containers.',
+        help='additional help'
+    )
+
+    # Create deploy command.
+    DeployCommand(sub_parser)
+    # Create offload command.
+    OffloadCommand(sub_parser)
+    # Create export command.
+    ExportCommand(sub_parser)
+    # create quality-control command
+    QualityControlCommand(sub_parser)
+    # create test command
+    TestCommand(sub_parser)
+    # create info command
+    InfoCommand(sub_parser)
+    # create marshaling-yard command
+    MarshalingYardCommand(sub_parser)
+
+    # parse args
+    args, extra_args = parser.parse_known_args()
+
+    # call function set by defaults.
+    if extra_args:
+        msg = []
+        for item in extra_args:
+            if '=' in item:
+                msg.append(item.split('=')[0])
+
+            elif item.startswith('-') or item.startswith('--'):
+                msg.append(item)
+
+        raise AttributeError(logger.error("The following are not valid options: {0}".format(', '.join(msg))))
+    else:
+        args.func(args)
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    logger.info("elapsed: {0} seconds".format(time.time() - start_time))

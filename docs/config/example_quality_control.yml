@@ -1,0 +1,18 @@
+---
+# quality control action.
+quality_control:
+
+  # couchdb service overrides.
+  couchdb:
+    log_config:
+      type: json-file
+      config: {}
+
+    ports:
+      - "6984:6984"
+
+  # api service overrides.
+  api:
+    links: []
+    env_vars:
+      - APP_ENV=development
