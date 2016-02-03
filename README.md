@@ -1,5 +1,6 @@
 [![Documentation Status](https://readthedocs.org/projects/freight-forwarder/badge/?version=latest)](http://freight-forwarder.readthedocs.org/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/TuneOSS/freight_forwarder.svg?branch=master)](https://travis-ci.org/TuneOSS/freight_forwarder)
+[![Gitter](https://badges.gitter.im/TuneOSS/freight_forwarder.svg)](https://gitter.im/TuneOSS/freight_forwarder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 #Freight Forwarder
 Freight Forwarder is a utility that organizes the transportation and distribution of docker images and containers from 
