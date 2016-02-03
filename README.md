@@ -6,7 +6,7 @@ Freight Forwarder is a utility that organizes the transportation and distributio
 the developer to their applications consumers. It allows the developer to focus on building features while relying on 
 Freight Forwarder for continuous integration.
 
-Documentation is available here: [Freight Forwarder Documentation](http://docs.ops.tune.com/ff/).
+Documentation is available here: [Freight Forwarder Documentation](http://freight-forwarder.readthedocs.org/en/latest).
 
 ##Description
 Freight Forwarder is an SDK and CLI that focuses on continuous integration and continuous delivery.
@@ -26,10 +26,10 @@ When deploying from one environment to the next it is suggested to:
     4. That image will then be used when deploying to that environment.
 
 ##Installation
-Follow these [instructions](http://docs.ops.tune.com/ff/introduction/install.html).
+Follow these [instructions](http://freight-forwarder.readthedocs.org/en/latest/introduction/install.html).
 
 ##Contributing
-Want to write some code? Check out the [contributing documentation](http://docs.ops.tune.com/ff/contributing/overview.html).
+Want to write some code? Check out the [contributing documentation](http://freight-forwarder.readthedocs.org/en/latest/contributing/overview.html).
 
 ##Contributors
 * [abanna](http://github.com/abanna) - 2015-Current
