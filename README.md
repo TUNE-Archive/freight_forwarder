@@ -1,3 +1,5 @@
+[![Version](https://img.shields.io/pypi/v/freight-forwarder.svg?)](https://pypi.python.org/pypi/freight-forwarder)
+[![Downloads](https://img.shields.io/pypi/dm/freight-forwarder.svg?)](https://pypi.python.org/pypi/freight-forwarder)
 [![Documentation Status](https://readthedocs.org/projects/freight-forwarder/badge/?version=latest)](http://freight-forwarder.readthedocs.org/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/TuneOSS/freight_forwarder.svg?branch=master)](https://travis-ci.org/TuneOSS/freight_forwarder)
 [![Gitter](https://badges.gitter.im/TuneOSS/freight_forwarder.svg)](https://gitter.im/TuneOSS/freight_forwarder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
