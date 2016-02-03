@@ -106,9 +106,28 @@ Build Documentation
 Docker::
 
     $ pip install freight-forwarder
-    $ freight-forwarder quality-control --environment development --data-center local --service proxy
 
-After the containers start you can find the documentation at: localhost:8080/ff/
+
+The freight-forwarder.yml file will have to be updated with your specific docker host info::
+
+    environments:
+      alexb: &alexb
+        address: "https://172.16.135.137:2376" # <- Change me
+        ssl_cert_path: "/Users/alexb/.docker/machine/machines/ff02-dev" # <- Change me
+        verify: false
+
+      development:
+        local:
+          hosts:
+            default:
+              - *alexb
+
+
+Then just run Freight to start the documentation containers::
+
+    $ freight-forwarder quality-control --environment development --data-center local --service docs
+
+After the containers start you can find the documentation at: your_container_ip:8080
 
 Make::
 
