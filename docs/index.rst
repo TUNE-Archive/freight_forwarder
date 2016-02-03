@@ -10,8 +10,8 @@ Forwarder to be the expert in continuous integration and continuous delivery.
 
 The `project website`_ can be reference for the following information.  Please report any bugs or feature requests on `Github Issues`_.
 
-.. _project website: https://github.com/Adapp/freight_forwarder
-.. _Github Issues: https://github.com/Adapp/freight_forwarder/issues
+.. _project website: https://github.com/TuneOSS/freight_forwarder
+.. _Github Issues: https://github.com/TuneOSS/freight_forwarder/issues
 
 .. _index-overview:
 

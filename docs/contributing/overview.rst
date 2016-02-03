@@ -105,7 +105,7 @@ Build Documentation
 
 Docker::
 
-    $ pip install freight-forwarder -i http://internal.pip.server/pypi/ --trusted-host internal.pip.server
+    $ pip install freight-forwarder
     $ freight-forwarder quality-control --environment development --data-center local --service proxy
 
 After the containers start you can find the documentation at: localhost:8080/ff/
