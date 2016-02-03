@@ -1,7 +1,7 @@
 ---
 team: "tune_platform"
 project: "freight-forwarder"
-repository: "git@github.com:Adapp/cia.git"
+repository: "git@github.com:TuneOSS/freight_forwarder.git"
 
 wheel:
   build: ./
