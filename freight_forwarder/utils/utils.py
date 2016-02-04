@@ -349,8 +349,8 @@ def _display_error(normalized_data, stream):
     # TODO: need to revisit this later.
     error = normalized_data['error']
     if 'error_detail' in normalized_data:
-        if 'code' in normalized_data:
-            stream.write("exit code: {0}".format(normalized_data['code']))
+        if normalized_data['error_detail'].get('code'):
+            stream.write("exit code: {0}\n".format(normalized_data['error_detail'].get('code')))
 
         if 'error_detail' in normalized_data:
             stream.write(normalized_data['error_detail'].get('message', 'There were no message details provided.'))
