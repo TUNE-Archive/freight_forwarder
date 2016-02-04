@@ -201,22 +201,46 @@ ROOT_SCHEME = {
             },
             'command': {
                 'is': {
-                    'type': (list, six.string_types),
-                    'items': {
-                        'is': {
-                            'type': six.string_types
+                    'one_of': [
+                        {
+                            'is': {
+                                'type': six.string_types,
+                            }
+                        },
+                        {
+                            'is': {
+                                'type': list,
+                                'items': {
+                                    'is': {
+                                        'type': six.string_types
+                                    }
+                                }
+                            },
                         }
-                    }
+
+                    ]
                 }
             },
             'cmd': {
                 'is': {
-                    'type': (list, six.string_types),
-                    'items': {
-                        'is': {
-                            'type': six.string_types
+                    'one_of': [
+                        {
+                            'is': {
+                                'type': six.string_types,
+                            }
+                        },
+                        {
+                            'is': {
+                                'type': list,
+                                'items': {
+                                    'is': {
+                                        'type': six.string_types
+                                    }
+                                }
+                            },
                         }
-                    }
+
+                    ]
                 }
             },
             'cpu_shares': {
@@ -246,22 +270,46 @@ ROOT_SCHEME = {
             },
             'dns': {
                 'is': {
-                    'type': (six.string_types, list),
-                    'items': {
-                        'is': {
-                            'type': six.string_types
+                    'one_of': [
+                        {
+                            'is': {
+                                'type': six.string_types,
+                            }
+                        },
+                        {
+                            'is': {
+                                'type': list,
+                                'items': {
+                                    'is': {
+                                        'type': six.string_types
+                                    }
+                                }
+                            },
                         }
-                    }
+
+                    ]
                 }
             },
             'dns_search': {
                 'is': {
-                    'type': (six.string_types, list),
-                    'items': {
-                        'is': {
-                            'type': six.string_types
+                    'one_of': [
+                        {
+                            'is': {
+                                'type': six.string_types,
+                            }
+                        },
+                        {
+                            'is': {
+                                'type': list,
+                                'items': {
+                                    'is': {
+                                        'type': six.string_types
+                                    }
+                                }
+                            },
                         }
-                    }
+
+                    ]
                 }
             },
             'entrypoint': {
