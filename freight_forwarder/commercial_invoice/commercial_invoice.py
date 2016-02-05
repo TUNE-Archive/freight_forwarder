@@ -53,7 +53,7 @@ class CommercialInvoice(object):
 
     @property
     def injector(self):
-        registry = self._registries['injector'] if 'injector' in self._registries else self._registries.get('default')
+        registry = self._registries['injector'] if self._registries.get('injector') else self._registries.get('default')
 
         return Injector(self._environment, self._data_center, self._project, registry)
 
@@ -174,6 +174,7 @@ class CommercialInvoice(object):
             raise TypeError(logger.error("registries must be a dict"))
 
         if 'default' not in registries:
+            registries['default'] = registries['docker_hub']
             logger.warning("There was not default registry defined. Default will be Docker hub.")
 
         return registries
@@ -287,11 +288,10 @@ class CommercialInvoice(object):
             raise ValueError(logger.error("When defining a service it must have items."))
 
         service['labels'] = self._create_labels(name, service)
-
-        source_registry = None
-        docker_file   = None
-        namespace     = "{0}-{1}".format(self._project, name)
-        repository    = None
+        source_registry   = None
+        docker_file       = None
+        namespace         = "{0}-{1}".format(self._project, name)
+        repository        = None
 
         if service.get('image'):
             if not isinstance(service['image'], six.string_types):
@@ -324,8 +324,6 @@ class CommercialInvoice(object):
             raise KeyError("each service must have a either a build or image property.")
 
         destination_registry = self.registries.get(service.get('export_to', 'default'))
-        if not destination_registry:
-            destination_registry = self.registries.get('docker_hub')
 
         return Service(
             repository,
