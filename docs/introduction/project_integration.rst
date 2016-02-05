@@ -12,7 +12,7 @@ is a standard Dockerfile definition that contains the instructions required to c
 The Project Dockerfile must container an entrypoint or cmd to start the application.
 
 If the project has tests a second Dockerfile should be built. This test Dockerfile should reside in the root of the
-application tests directory and inherent from the Project Dockerfile. The test Dockerfile should contain instructions
+application tests directory and inherit from the Project Dockerfile. The test Dockerfile should contain instructions
 to install test dependencies and have an entrypoint and command that will run the entire applications test suite. The
 tests should return a non zero on failure.
 
