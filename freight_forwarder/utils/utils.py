@@ -192,6 +192,8 @@ def parse_stream(response):
             elif 'stream' in normalized_data:
                 stream_data.append(normalized_data)
                 _display_stream(normalized_data, stream)
+            else:
+                stream.write(data)
 
     stream.flush()
     return stream_data
@@ -350,7 +352,8 @@ def _display_error(normalized_data, stream):
     error = normalized_data['error']
     if 'error_detail' in normalized_data:
         if normalized_data['error_detail'].get('code'):
-            stream.write("exit code: {0}\n".format(normalized_data['error_detail'].get('code')))
+            stream.write("exit code: {0}\n".format(normalized_data['error_detail'].get('code'),
+                                                   'There was no exit code provided'))
 
         if 'error_detail' in normalized_data:
             stream.write(normalized_data['error_detail'].get('message', 'There were no message details provided.'))
