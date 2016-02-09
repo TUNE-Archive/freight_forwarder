@@ -206,7 +206,12 @@ class FreightForwarder(object):
                 if configs:
                     container_ship.injector = commercial_invoice.injector if configs else None
 
-                self.__dispatch(container_ship, transport_service, attach, configs, True, test, use_cache)
+                if attach:
+                    dependents = False
+                else:
+                    dependents = True
+
+                self.__dispatch(container_ship, transport_service, attach, configs, dependents, test, use_cache)
 
                 if clean:
                     # delete containers.
@@ -291,7 +296,7 @@ class FreightForwarder(object):
         finally:
             self.__complete_distribution(commercial_invoice)
 
-    def export(self, commercial_invoice, attach=False, clean=None, configs=None, tags=None, test=None, use_cache=False,
+    def export(self, commercial_invoice, clean=None, configs=None, tags=None, test=None, use_cache=False,
                validate=True):
         """
         """
@@ -331,7 +336,7 @@ class FreightForwarder(object):
 
                 if validate:
                     # dispatch service and test.
-                    self.__dispatch(container_ship, transport_service, attach, configs, False, test, use_cache)
+                    self.__dispatch(container_ship, transport_service, False, configs, False, test, use_cache)
                 else:
                     self.__dispatch_export_no_validation(container_ship, transport_service, configs, use_cache)
 
@@ -394,7 +399,7 @@ class FreightForwarder(object):
         else:
             bill_of_lading[address] = [service]
 
-    def __dispatch_dependencies(self, container_ship, service, attach, configs, dependents, test, use_cache):
+    def __dispatch_dependencies(self, container_ship, service, configs, dependents, test, use_cache):
         """
         """
         # TODO: validation
@@ -403,17 +408,17 @@ class FreightForwarder(object):
                 if not dependency.containers:
                     dependency_containers = container_ship.find_service_containers(dependency)
                     if not dependency_containers:
-                        self.__dispatch_service(container_ship, dependency, attach, configs, dependents, test, use_cache)
+                        self.__dispatch_service(container_ship, dependency, False, configs, dependents, test, use_cache)
 
                         if dependency.dependents and dependents:
                             for name, dependent in six.iteritems(dependency.dependents):
                                 if name != service.name:
-                                    self.__dispatch_service(container_ship, dependent, attach, configs, dependents, test, use_cache)
+                                    self.__dispatch_service(container_ship, dependent, False, configs, dependents, test, use_cache)
 
     def __dispatch_service(self, container_ship, service, attach, configs, dependents, test, use_cache):
         """
         """
-        self.__dispatch_dependencies(container_ship, service, attach, None, dependents, test, use_cache)
+        self.__dispatch_dependencies(container_ship, service, None, dependents, test, use_cache)
 
         # load containers if they haven't been.
         if not service.containers:
@@ -454,9 +459,9 @@ class FreightForwarder(object):
 
         self.__dispatch_service(container_ship, service, attach, configs, dependents, test, use_cache)
 
-        if service.dependents and dependents:
+        if service.dependents and dependents and not attach:
             for name, dependent in six.iteritems(service.dependents):
-                self.__dispatch(container_ship, dependent, attach, None, dependents, test, use_cache)
+                self.__dispatch(container_ship, dependent, False, None, dependents, test, use_cache)
 
     def __get_services(self, action, data_center, environment):
         services = {}

@@ -45,7 +45,6 @@ class ExportCommand(CliMixin):
       - ``--environment``  (**required**) - The environment to deploy. example: development, test, or production.
       - ``--service``      (**required**) - The Service that will be built and exported.
       - ``--clean``              (optional) - Clean up anything that was created during current command execution.
-      - ``--attach``             (optional) - Attach to the service containers output.
       - ``--configs``            (optional) - Inject configuration files. Requires CIA integration.
       - ``--tag``                (optional) - Metadata to tag Docker images with.
       - ``--no-tagging-scheme``  (optional) - Turn off freight forwarders tagging scheme.
@@ -73,14 +72,6 @@ class ExportCommand(CliMixin):
         """
         build arguments for command.
         """
-        self._parser.add_argument(
-            '--attach',
-            type=bool,
-            required=False,
-            default=False,
-            help="Attach to containers output?"
-        )
-
         self._parser.add_argument(
             '--clean',
             type=bool,
@@ -185,7 +176,6 @@ class ExportCommand(CliMixin):
         # create commercial_invoice
         bill_of_lading = freight_forwarder.export(
             commercial_invoice,
-            attach=args.attach,
             clean=args.clean,
             configs=args.configs,
             tags=args.tag,

@@ -85,9 +85,16 @@ class Container(object):
         """
         Keeping this simple until we need to extend later.
         """
-        response = self.client.attach(self.id, stdout, stderr, stream, logs)
-        data = parse_stream(response)
-        self.client.close()
+
+        try:
+            data = parse_stream(self.client.attach(self.id, stdout, stderr, stream, logs))
+        except KeyboardInterrupt:
+            logger.warning(
+                "service container: {0} has been interrupted. "
+                "The container will be stopped but will not be deleted.".format(self.name)
+            )
+            data = None
+            self.stop()
 
         return data
 
@@ -162,6 +169,7 @@ class Container(object):
             if attach:
                 self.attach()
                 exit_code = self.wait()
+
             else:
                 exit_code = self._wait_for_exit_code()
 
@@ -237,15 +245,17 @@ class Container(object):
             if self._transcribe_queue:
                 while not self._transcribe_queue.empty():
                     logs = self._transcribe_queue.get()
-                    if isinstance(logs, six.string_types):
-                        logs = logs.decode(encoding='utf-8', errors="ignore")
-                        msg = '{0} {1}'.format(msg, logs)
+
+                    if isinstance(logs, six.binary_type):
+                        logs = logs.decode(encoding='UTF-8', errors="ignore")
+
+                    msg = '{0} {1}'.format(msg, logs)
         else:
             logs = self.client.logs(self.id, stdout=True, stderr=True, stream=False, timestamps=False, tail='all')
-            if isinstance(logs, six.string_types):
-                logs = logs.decode(encoding='utf-8', errors="ignore")
+            if isinstance(logs, six.binary_type):
+                logs = logs.decode(encoding='UTF-8', errors="ignore")
 
-            msg = '{0} {1}'.format(msg, logs)
+            msg = '{0}{1}'.format(msg, logs)
 
         logger.error(msg)
 
@@ -426,6 +436,7 @@ class Container(object):
         for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT]:
             signal.signal(sig, self._handler)
 
+        client = None
         try:
             if isinstance(self.client.verify, bool):
                 tls_config = docker.tls.TLSConfig(
@@ -440,12 +451,11 @@ class Container(object):
 
             client = docker.Client(self.client.base_url, tls=tls_config, timeout=self.client.timeout, version=self.client.api_version)
 
-            response = client.attach(self.id, True, True, True, False)
-
-            for line in response:
+            for line in client.attach(self.id, True, True, True, False):
                 queue.put(line)
         finally:
-            client.close()
+            if isinstance(client, docker.Client):
+                client.close()
 
     def _wait_for_exit_code(self, timer=10):
         """
