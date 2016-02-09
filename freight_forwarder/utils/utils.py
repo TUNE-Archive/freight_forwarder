@@ -167,7 +167,12 @@ def parse_stream(response):
 
     for data in response:
         if data:
-            data = data.decode('utf-8')
+            try:
+                data = data.decode('utf-8')
+            except AttributeError as e:
+                logger.exception("Unable to parse stream, Attribute Error Raised: {0}".format(e))
+                stream.write(data)
+                continue
 
             try:
                 normalized_data = normalize_keys(json.loads(data))
@@ -192,6 +197,8 @@ def parse_stream(response):
             elif 'stream' in normalized_data:
                 stream_data.append(normalized_data)
                 _display_stream(normalized_data, stream)
+            else:
+                stream.write(data)
 
     stream.flush()
     return stream_data
@@ -349,11 +356,10 @@ def _display_error(normalized_data, stream):
     # TODO: need to revisit this later.
     error = normalized_data['error']
     if 'error_detail' in normalized_data:
-        if 'code' in normalized_data:
-            stream.write("exit code: {0}".format(normalized_data['code']))
+        stream.write("exit code: {0}\n".format(normalized_data['error_detail'].get('code'),
+                                               'There was no exit code provided'))
 
-        if 'error_detail' in normalized_data:
-            stream.write(normalized_data['error_detail'].get('message', 'There were no message details provided.'))
+        stream.write(normalized_data['error_detail'].get('message', 'There were no message details provided.'))
 
     raise DockerStreamException(error)
 
