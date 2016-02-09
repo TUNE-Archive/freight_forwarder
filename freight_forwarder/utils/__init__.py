@@ -15,5 +15,6 @@ from .utils import(
     normalize_keys,
     normalize_value,
     capitalize_keys,
-    parse_stream
+    parse_stream,
+    DockerStreamException
 )

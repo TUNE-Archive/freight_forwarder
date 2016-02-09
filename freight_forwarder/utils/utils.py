@@ -167,7 +167,12 @@ def parse_stream(response):
 
     for data in response:
         if data:
-            data = data.decode('utf-8')
+            try:
+                data = data.decode('utf-8')
+            except AttributeError as e:
+                logger.exception("Unable to parse stream, Attribute Error Raised: {0}".format(e))
+                stream.write(data)
+                continue
 
             try:
                 normalized_data = normalize_keys(json.loads(data))
