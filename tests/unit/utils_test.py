@@ -4,7 +4,6 @@ import string
 import random
 import os
 import json
-import six
 
 from tests import unittest, mock
 
@@ -196,12 +195,13 @@ class UtilsParseStreamTest(unittest.TestCase):
 
     def test_parse_stream_error(self):
         # Configure Mock response with error
-        test_docker_response_error = {"error": "Test Error",
-                                      "error_detail": {
-                                          "code": "2",
-                                          "message": "Test Error Message"
-                                        }
-                                      }
+        test_docker_response_error = {
+            "error": "Test Error",
+            "error_detail": {
+                "code": "2",
+                "message": "Test Error Message"
+            }
+        }
         test_docker_response_encoded = json.dumps(test_docker_response_error).encode('utf-8')
         test_values_list = [test_docker_response_encoded]
 
@@ -254,7 +254,7 @@ class UtilsParseStreamTest(unittest.TestCase):
 
     def test_parse_stream_status(self):
         # Configure Mock response with status
-        test_docker_response_status= {
+        test_docker_response_status = {
             "status": "Download complete",
             "progress_detail": {},
             "id": "12340981vas"
