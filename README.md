@@ -31,6 +31,8 @@ When deploying from one environment to the next it is suggested to:
 ##Installation
 Follow these [instructions](http://freight-forwarder.readthedocs.org/en/latest/introduction/install.html).
 
+Freight Forwarder works on Docker version 1.8, API version 1.20.
+
 ##Contributing
 Want to write some code? Check out the [contributing documentation](http://freight-forwarder.readthedocs.org/en/latest/contributing/overview.html).
 
