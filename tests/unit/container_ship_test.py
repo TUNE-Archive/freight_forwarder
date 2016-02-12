@@ -80,7 +80,7 @@ class ContainerShipTest(unittest.TestCase):
     def test_manifest(self):
         pass
 
-    def test_recall_service(self, mock_service_map):
+    def test_recall_service(self):
         pass
 
     def test_recall_service_failure(self):
