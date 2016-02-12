@@ -14,6 +14,8 @@ the image from the previous environment will be pulled from the registry and con
 Testing will be ran with the new configuration changes. After the image is verified, it will be pushed up to the registry and
 tagged accordingly. That image will then be used when deploying to that environment.
 
+Freight Forwarder works on Docker version 1.8, API version 1.20.
+
 Please review the :ref:`project integration <project-integration>` documentation to start integrating your project with Freight Forwarder.
 
 .. _general-config:
