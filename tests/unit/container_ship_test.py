@@ -80,13 +80,8 @@ class ContainerShipTest(unittest.TestCase):
     def test_manifest(self):
         pass
 
-    # @mock.patch.object(ContainerShip, '_service_map')
-    # def test_recall_service(self, mock_service_map):
-    #     self.mock_urlparse.return_value.scheme = 'http'
-    #     self.mock_service.alias = 'api'
-    #     container_ship = ContainerShip(address='http://127.0.0.1:2376', **{})
-    #     container_ship.url.geturl.return_value = 'foobar'
-    #     container_ship.recall_service(service=self.mock_service)
+    def test_recall_service(self, mock_service_map):
+        pass
 
     def test_recall_service_failure(self):
         self.mock_urlparse.return_value.scheme = 'http'
