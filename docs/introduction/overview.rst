@@ -11,7 +11,7 @@ and then deployed. Freight Forwarder uses an image based CI/CD approach, which m
 being deployed. Images should be 100% immutable, meaning that no additional changes should need to be made to the images after being exported.
 It is expected that containers will be able to start taking traffic or doing work on initialization. When deploying from one environment to the next,
 the image from the previous environment will be pulled from the registry and configuration changes will be made and committed to a new image.
-Testing will be ran with the new configuration changes. After the image is verified, it will be pushed up to the registry and
+Testing will be run with the new configuration changes. After the image is verified, it will be pushed up to the registry and
 tagged accordingly. That image will then be used when deploying to that environment.
 
 Freight Forwarder works on Docker version 1.8, API version 1.20.
