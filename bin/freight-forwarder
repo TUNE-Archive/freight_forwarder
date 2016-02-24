@@ -62,10 +62,13 @@ def main():
             elif item.startswith('-') or item.startswith('--'):
                 msg.append(item)
 
-        raise AttributeError(logger.error("The following are not valid options: {0}".format(', '.join(msg))))
-    else:
-        args.func(args)
+        logger.error("The following are not valid options: {0}".format(', '.join(msg)))
+        raise AttributeError()
 
+    elif hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_usage()
 
 if __name__ == '__main__':
     start_time = time.time()
