@@ -1,6 +1,23 @@
 # Change Log
 #### All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+## [1.0.1] - 2016-03-18
+
+### Changes:
+* Removing attach from export.
+* Updated config validation to support beta environment.
+* Added ContainerShip unit tests.
+* When attached we now catch KeyboardInterrupt to allow the run to finish.
+
+### New Features:
+* Travis CI integration.
+* Codecov integration.
+
+### Bugs Resolved:
+* Commercial invoice will now correctly set default to docker hub if the config doesn't contain a default registry.
+* No longer attach to services that weren't passed during quality control.
+* Fixing issue with python 3.4 arg parse. will now display usage if no arguments are passed.
+
 ## [1.0.0] - 2016-02-02
 
 ### Breaking Changes:
@@ -23,7 +40,6 @@ create and restart only the containers that are required to.
 * Updated code base to support python3
 * Export will no longer attempt to build and start dependents only dependencies.
 * added unit tests, improved test coverage
-* updated config validation to support beta environment.
 
 ### New Features:
 * Simplified configuration file to make it easier to understand and integrate with.
