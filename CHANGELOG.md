@@ -23,6 +23,7 @@ create and restart only the containers that are required to.
 * Updated code base to support python3
 * Export will no longer attempt to build and start dependents only dependencies.
 * added unit tests, improved test coverage
+* updated config validation to support beta environment.
 
 ### New Features:
 * Simplified configuration file to make it easier to understand and integrate with.

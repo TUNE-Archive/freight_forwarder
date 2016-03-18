@@ -34,6 +34,7 @@ ENVIRONMENTS_SCHEME = {
             'performance',
             'stage',
             'staging',
+            'beta',
             'integration',
             'prod',
             'production'
@@ -48,6 +49,7 @@ ENVIRONMENTS_SCHEME = {
     'performance': {'inherit': '$environment'},
     'stage': {'inherit': '$environment'},
     'staging': {'inherit': '$environment'},
+    'beta': {'inherit': '$environment'},
     'integration': {'inherit': '$environment'},
     'prod': {'inherit': '$environment'},
     'production': {'inherit': '$environment'},
