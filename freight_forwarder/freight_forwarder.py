@@ -83,7 +83,7 @@ class FreightForwarder(object):
         # if we're exporting we need to use other services deploy definitions to avoid issues
         if action == 'export':
             services = self.__get_services('deploy', data_center, environment)
-            services[transport_service.alias] = transport_service
+            services[transport_service.name] = transport_service
         else:
             services = self.__get_services(action, data_center, environment)
 
