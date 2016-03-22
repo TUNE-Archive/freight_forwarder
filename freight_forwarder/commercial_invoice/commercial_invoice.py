@@ -191,29 +191,30 @@ class CommercialInvoice(object):
                 default_container_ship     = self._create_container_ship(None)
                 container_ships['default'] = {default_container_ship.url.geturl(): default_container_ship}
 
-            for alias, hosts in six.iteritems(hosts):
+            for key, hosts in six.iteritems(hosts):
                 if hosts is None:
-                    container_ships[alias] = hosts
+                    container_ships[key] = hosts
                 elif isinstance(hosts, list):
-                    container_ships[alias] = {}
+                    key = hosts.alias
+                    container_ships[key] = {}
 
                     for host in hosts:
                         if not host or not isinstance(host, dict):
-                            raise ValueError("hosts: {0} is required to be a dict.".format(alias))
+                            raise ValueError("hosts: {0} is required to be a dict.".format(key))
 
                         existing_container_ship = None
 
                         for container_ship_dict in six.itervalues(container_ships):
 
                             for address, container_ship in six.iteritems(container_ship_dict):
-                                if address == host.get('address') and address not in container_ships[alias]:
+                                if address == host.get('address') and address not in container_ships[key]:
                                     existing_container_ship = container_ship
                                     break
 
                         if existing_container_ship is None:
-                            container_ships[alias][host.get('address')] = self._create_container_ship(host)
+                            container_ships[key][host.get('address')] = self._create_container_ship(host)
                         else:
-                            container_ships[alias][host.get('address')] = existing_container_ship
+                            container_ships[key][host.get('address')] = existing_container_ship
                 else:
                     raise ValueError(logger.error("hosts is required to be a list or None. host: {0}".format(hosts)))
 

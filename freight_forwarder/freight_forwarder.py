@@ -83,17 +83,17 @@ class FreightForwarder(object):
         # if we're exporting we need to use other services deploy definitions to avoid issues
         if action == 'export':
             services = self.__get_services('deploy', data_center, environment)
-            services[transport_service.name] = transport_service
+            services[transport_service.alias] = transport_service
         else:
             services = self.__get_services(action, data_center, environment)
 
         return CommercialInvoice(
-            self.team,
-            self.project,
-            services,
-            self._config.get('hosts', 'environments', environment.name, data_center.name, action),
-            transport_service.alias,
-            action,
+            team=self.team,
+            project=self.project,
+            services=services,
+            hosts=self._config.get('hosts', 'environments', environment.name, data_center.name, action),
+            transport_service=transport_service.alias,
+            transport_method=action,
             data_center=data_center.alias,
             environment=environment.alias,
             registries=self._config.get('registries'),
@@ -369,7 +369,7 @@ class FreightForwarder(object):
         if commercial_invoice.transport_method == 'export':
             host_alias = commercial_invoice.transport_method
         else:
-            host_alias = commercial_invoice.transport_service.name
+            host_alias = commercial_invoice._transport_service
 
         fleet = commercial_invoice.container_ships.get(
             host_alias,
