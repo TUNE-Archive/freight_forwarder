@@ -19,7 +19,7 @@ easing the pain of multiple container environments. Freight Forwarder can be use
 
 Freight Forwarder focuses on how Docker images are built, tested, pushed, and then deployed. The images being pushed to the registry 
 are the artifacts being deployed. There should be no additional changes made to the images after being exported. In addition, 
-the containers should be able to start taking traffic or doing work on initialization. 
+the containers should be able to start taking traffic or doing work on initialization.
 
 When deploying from one environment to the next it is suggested to:
 

@@ -219,11 +219,6 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
         self.assertEqual(len(commercial_invoice.container_ships), 3)
         self.assertIn('tomcat-test', commercial_invoice.container_ships.keys())
         self.assertEqual(len(commercial_invoice.container_ships['tomcat-test']), 1)
-        mock_container_ship.assert_called_with(
-            'https://192.168.99.100:2376',
-            services=None,
-            verify=False,
-            ssl_cert_path='/Users/benjamin/.docker/machine/machines/1.8.1-dev')
 
     @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
     @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.ContainerShip', create=True)
