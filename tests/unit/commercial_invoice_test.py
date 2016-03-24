@@ -1,7 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 
+import os
+
 from tests import unittest, mock
+from mock import call
 from freight_forwarder.commercial_invoice import CommercialInvoice
+from freight_forwarder.freight_forwarder  import FreightForwarder
 
 
 class CommercialInvoiceConstructorTest(unittest.TestCase):
@@ -182,3 +186,64 @@ class CommercialInvoiceInjectorTest(unittest.TestCase):
             'mighty_morphing',
             mocked_injector.return_value
         )
+
+
+class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
+    def setUp(self):
+        self.freight_forwarder = FreightForwarder(
+            config_path_override=os.path.join(os.getcwd(),
+                                              'tests',
+                                              'fixtures',
+                                              'test_freight_forwarder.yaml'),
+            verbose=True
+        )
+
+    def tearDown(self):
+        del self.freight_forwarder
+
+    @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
+    @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.ContainerShip', create=True)
+    def test_create_containerships_with_deploy(self, mock_container_ship, mocked_create_registries):
+        """
+        Validate the deployment host or hosts is available inside the commercial invoice
+        :param mock_container_ship:
+        :param mocked_create_registries:
+        :return:
+        """
+        commercial_invoice = self.freight_forwarder.commercial_invoice(
+            'deploy',
+            'local',
+            'development',
+            'tomcat-test'
+        )
+        self.assertEqual(len(commercial_invoice.container_ships), 3)
+        self.assertIn('tomcat-test', commercial_invoice.container_ships.keys())
+        self.assertEqual(len(commercial_invoice.container_ships['tomcat-test']), 1)
+        mock_container_ship.assert_called_with(
+            'https://192.168.99.100:2376',
+            services=None,
+            verify=False,
+            ssl_cert_path='/Users/benjamin/.docker/machine/machines/1.8.1-dev')
+
+    @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
+    @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.ContainerShip', create=True)
+    @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.os')
+    def test_create_containerships_with_no_default(self, mock_os, mock_container_ship, mocked_create_registries):
+        """
+        Validate the the container_ship creation with no default defined in the configuration
+        :param mock_container_ship:
+        :param mocked_create_registries:
+        :return:
+        """
+        # Remove default hosts to ensure it is created
+        hosts = self.freight_forwarder._config.get('hosts', 'environments', 'development', 'local')
+        del hosts['default']
+
+        commercial_invoice = self.freight_forwarder.commercial_invoice(
+            'deploy',
+            'local',
+            'development',
+            'tomcat-test'
+        )
+        self.assertEqual(mock_os.getenv.call_count, 3)
+        mock_os.getenv.assert_called_with('DOCKER_TLS_VERIFY')

@@ -24,9 +24,9 @@ class FreightForwarder(object):
     and ship yards. it will also handle fleet orchestration and discovery. If no config is present then a invoice /
     shipping and receiving port must be provided.
     """
-    def __init__(self, config_path_override=None):
+    def __init__(self, config_path_override=None, verbose=True):
         # create config
-        self._config = Config()
+        self._config = Config(path_override=config_path_override, verbose=verbose)
 
         # validate config file
         self._config.validate()

@@ -1,23 +1,33 @@
+# -*- coding: utf-8; -*-
 from __future__ import absolute_import, unicode_literals
 
-from tests import unittest
+import os
+
+from tests import unittest, mock
 
 from freight_forwarder import FreightForwarder
 
 
 class FreightForwarderTest(unittest.TestCase):
-    def setup(self):
-        """Some Mock
-        """
+    def setUp(self):
+        self.freight_forwarder = FreightForwarder(
+            config_path_override=os.path.join(os.getcwd(),
+                                              'tests',
+                                              'fixtures',
+                                              'test_freight_forwarder.yaml'),
+            verbose=True
+        )
 
-    def test_valid_repository(self):
-        self.assertRaises(TypeError, lambda: FreightForwarder(1, "cia"))
-        self.assertRaises(TypeError, lambda: FreightForwarder([], "cia"))
-        self.assertRaises(TypeError, lambda: FreightForwarder({}, "cia"))
-        self.assertRaises(TypeError, lambda: FreightForwarder(None, "cia"))
-        self.assertRaises(TypeError, lambda: FreightForwarder(type, "cia"))
+    def tearDown(self):
+        del self.freight_forwarder
 
-    def test_valid_name(self):
-        """
-        """
-        pass
+    @mock.patch('freight_forwarder.freight_forwarder.CommercialInvoice', create=True)
+    def test_commercial_invoice_export_and_deploy_service(self, mock_commercial_invoice):
+        commercial_invoice = self.freight_forwarder.commercial_invoice(
+            action='export',
+            data_center='local',
+            environment='development',
+            transport_service='tomcat-test'
+        )
+        self.assertEqual(mock_commercial_invoice.call_args[1]['services']['tomcat_test']['build'],
+                          './Dockerfile')
