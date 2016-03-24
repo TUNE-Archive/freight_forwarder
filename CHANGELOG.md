@@ -1,6 +1,12 @@
 # Change Log
 #### All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+## [1.0.2] - 2016-03-24
+* Resolved a bug where an export operation was using an image declaration from the same `deploy` environment 
+  instead of export definition
+* Resolved a bug where an environment's host service definition was being ignored and using the defined default
+* Updated `FreightForwarder` to allow for the passing of a config path override and a verbosity level for logs.
+
 ## [1.0.1] - 2016-03-18
 
 ### Changes:

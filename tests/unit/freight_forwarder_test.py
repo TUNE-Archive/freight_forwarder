@@ -5,7 +5,8 @@ import os
 
 from tests import unittest, mock
 
-from freight_forwarder import FreightForwarder
+from freight_forwarder        import FreightForwarder
+from freight_forwarder.config import ConfigDict
 
 
 class FreightForwarderTest(unittest.TestCase):
@@ -29,5 +30,9 @@ class FreightForwarderTest(unittest.TestCase):
             environment='development',
             transport_service='tomcat-test'
         )
-        self.assertEqual(mock_commercial_invoice.call_args[1]['services']['tomcat_test']['build'],
+        commercial_invoice_services = mock_commercial_invoice.call_args[1].get('services')
+        self.assertEqual(commercial_invoice_services['tomcat_test']['build'],
                           './Dockerfile')
+        self.assertIsInstance(commercial_invoice_services['tomcat_test'], ConfigDict)
+
+        self.assertNotIn('image', commercial_invoice_services['tomcat_test'].values())

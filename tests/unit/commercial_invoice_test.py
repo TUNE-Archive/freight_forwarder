@@ -241,4 +241,5 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
             'tomcat-test'
         )
         self.assertEqual(mock_os.getenv.call_count, 3)
-        mock_os.getenv.assert_called_with('DOCKER_TLS_VERIFY')
+        calls =  [call('DOCKER_TLS_VERIFY'), call('DOCKER_CERT_PATH'), call('DOCKER_HOST')]
+        mock_os.getenv.assert_has_call(calls, any_order=True)
