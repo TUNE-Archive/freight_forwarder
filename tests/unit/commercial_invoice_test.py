@@ -195,7 +195,7 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
                                               'tests',
                                               'fixtures',
                                               'test_freight_forwarder.yaml'),
-            verbose=True
+            verbose=False
         )
 
     def tearDown(self):
