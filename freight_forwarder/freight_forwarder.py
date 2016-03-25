@@ -369,7 +369,7 @@ class FreightForwarder(object):
         if commercial_invoice.transport_method == 'export':
             host_alias = commercial_invoice.transport_method
         else:
-            host_alias = commercial_invoice._transport_service
+            host_alias = commercial_invoice.transport_service.name
 
         fleet = commercial_invoice.container_ships.get(
             host_alias,

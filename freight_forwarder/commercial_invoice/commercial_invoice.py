@@ -191,30 +191,30 @@ class CommercialInvoice(object):
                 default_container_ship     = self._create_container_ship(None)
                 container_ships['default'] = {default_container_ship.url.geturl(): default_container_ship}
 
-            for key, hosts in six.iteritems(hosts):
+            for alias, hosts in six.iteritems(hosts):
                 if hosts is None:
-                    container_ships[key] = hosts
+                    container_ships[alias] = hosts
                 elif isinstance(hosts, list):
-                    key = hosts.alias
-                    container_ships[key] = {}
+                    alias = hosts.alias
+                    container_ships[alias] = {}
 
                     for host in hosts:
                         if not host or not isinstance(host, dict):
-                            raise ValueError("hosts: {0} is required to be a dict.".format(key))
+                            raise ValueError("hosts: {0} is required to be a dict.".format(alias))
 
                         existing_container_ship = None
 
                         for container_ship_dict in six.itervalues(container_ships):
 
                             for address, container_ship in six.iteritems(container_ship_dict):
-                                if address == host.get('address') and address not in container_ships[key]:
+                                if address == host.get('address') and address not in container_ships[alias]:
                                     existing_container_ship = container_ship
                                     break
 
                         if existing_container_ship is None:
-                            container_ships[key][host.get('address')] = self._create_container_ship(host)
+                            container_ships[alias][host.get('address')] = self._create_container_ship(host)
                         else:
-                            container_ships[key][host.get('address')] = existing_container_ship
+                            container_ships[alias][host.get('address')] = existing_container_ship
                 else:
                     raise ValueError(logger.error("hosts is required to be a list or None. host: {0}".format(hosts)))
 
