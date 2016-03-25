@@ -26,7 +26,7 @@ When deploying from one environment to the next it is suggested to:
     1. Pull the image from the previous environment make configuration changes and commit those changes to a new image layer.
     2. Testing should be run with the new configuration changes.
     3. After the image is verified, it will be pushed up to the registry and tagged accordingly.
-    4. That image will then be used when deploying to that environment..
+    4. That image will then be used when deploying to that environment.
 
 ##Installation
 Follow these [instructions](http://freight-forwarder.readthedocs.org/en/latest/introduction/install.html).
