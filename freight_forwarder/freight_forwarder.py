@@ -24,9 +24,9 @@ class FreightForwarder(object):
     and ship yards. it will also handle fleet orchestration and discovery. If no config is present then a invoice /
     shipping and receiving port must be provided.
     """
-    def __init__(self, config_path_override=None):
+    def __init__(self, config_path_override=None, verbose=True):
         # create config
-        self._config = Config()
+        self._config = Config(path_override=config_path_override, verbose=verbose)
 
         # validate config file
         self._config.validate()
@@ -83,17 +83,17 @@ class FreightForwarder(object):
         # if we're exporting we need to use other services deploy definitions to avoid issues
         if action == 'export':
             services = self.__get_services('deploy', data_center, environment)
-            services[transport_service.alias] = transport_service
+            services[transport_service.name] = transport_service
         else:
             services = self.__get_services(action, data_center, environment)
 
         return CommercialInvoice(
-            self.team,
-            self.project,
-            services,
-            self._config.get('hosts', 'environments', environment.name, data_center.name, action),
-            transport_service.alias,
-            action,
+            team=self.team,
+            project=self.project,
+            services=services,
+            hosts=self._config.get('hosts', 'environments', environment.name, data_center.name, action),
+            transport_service=transport_service.alias,
+            transport_method=action,
             data_center=data_center.alias,
             environment=environment.alias,
             registries=self._config.get('registries'),
@@ -628,7 +628,6 @@ class FreightForwarder(object):
     def __service_deployment_validation(self, service, validated=[]):
         if not service:
             raise ValueError("service_deployment_validation requires a service")
-
         if service.name in validated:
             return True
 

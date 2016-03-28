@@ -195,6 +195,7 @@ class CommercialInvoice(object):
                 if hosts is None:
                     container_ships[alias] = hosts
                 elif isinstance(hosts, list):
+                    alias = hosts.alias
                     container_ships[alias] = {}
 
                     for host in hosts:

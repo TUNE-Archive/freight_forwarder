@@ -1,0 +1,57 @@
+---
+team: ffbug
+project: example
+repository: "git@github.com/ffbug"
+
+registries:
+  # define development registry
+  dev: &docker_hub
+    address: "https://index.docker.io"
+    verify: false
+
+  tune_dev: &tune_dev
+    address: "https://docker-dev.ops.tune.com"
+    verify: false
+  default: *tune_dev
+
+tomcat-test:
+  build: "./Dockerfile"
+  ports:
+    - 8080:8080
+
+es-server:
+  image: tune_dev/tuneplatform/elasticsearch-server:latest
+  ports:
+    - 8080:8080
+
+environments:
+  development:
+    local:
+      hosts:
+        default:
+          - address: https://dv-dockerdevbox-dev.sea1.office.priv:2376
+            ssl_cert_path: /Users/benjamin/.docker/certs/tune_puppet/client
+            verify: false
+        export:
+          - address: https://192.168.99.100:2376
+            ssl_cert_path: /Users/benjamin/.docker/machine/machines/1.8.1-dev
+            verify: false
+        tomcat-test:
+          - address: https://192.168.99.101:2376
+            ssl_cert_path: /Users/benjamin/.docker/machine/machines/1.8.3-dev
+            verify: false
+
+      quality_control:
+        tomcat-test:
+          ports:
+            - 9090:8080
+          links:
+            - es-server
+
+      deploy:
+        tomcat-test:
+          image: "library/tomcat"
+          ports:
+            - 8080:8080
+          links:
+            - es-server
