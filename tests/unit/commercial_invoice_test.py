@@ -211,14 +211,14 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
         :return:
         """
         commercial_invoice = self.freight_forwarder.commercial_invoice(
-            'deploy',
-            'local',
-            'development',
-            'tomcat-test'
+            action='deploy',
+            data_center='local',
+            environment='development',
+            transport_service='tomcat_test'
         )
         self.assertEqual(len(commercial_invoice.container_ships), 3)
-        self.assertIn('tomcat-test', commercial_invoice.container_ships.keys())
-        self.assertEqual(len(commercial_invoice.container_ships['tomcat-test']), 1)
+        self.assertIn('tomcat_test', commercial_invoice.container_ships.keys())
+        self.assertEqual(len(commercial_invoice.container_ships['tomcat_test']), 1)
 
     @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
     @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.ContainerShip', create=True)
@@ -235,11 +235,38 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
         del hosts['default']
 
         commercial_invoice = self.freight_forwarder.commercial_invoice(
-            'deploy',
-            'local',
-            'development',
-            'tomcat-test'
+            action='deploy',
+            data_center='local',
+            environment='development',
+            transport_service='tomcat-test'
         )
         self.assertEqual(mock_os.getenv.call_count, 3)
         calls =  [call('DOCKER_TLS_VERIFY'), call('DOCKER_CERT_PATH'), call('DOCKER_HOST')]
         mock_os.getenv.assert_has_call(calls, any_order=True)
+
+    @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
+    @mock.patch('freight_forwarder.commercial_invoice.commercial_invoice.ContainerShip', create=True)
+    def test_create_containerships_using_yaml_variables(self, mock_container_ship, mocked_create_registries):
+        """
+        While utilizing variables for various hosts, ensure that all the necessary keys are present
+        :param mock_container_ship:
+        :param mocked_create_registries:
+        :return:
+        """
+        self.freight_forwarder.config
+
+        commercial_invoice = self.freight_forwarder.commercial_invoice(
+            action='deploy',
+            data_center='local',
+            environment='staging',
+            transport_service='tomcat-test'
+        )
+        container_ships = commercial_invoice.container_ships.keys()
+        config_hosts = self.freight_forwarder.config.environments['staging']['local']['hosts'].keys()
+        self.assertEqual(len(commercial_invoice.container_ships), 4)
+        self.assertIn('tomcat_test', container_ships)
+        self.assertIn('redis_srv', container_ships)
+        self.assertIn('https://192.168.99.100:2376', commercial_invoice.container_ships.get('tomcat_test').keys())
+        self.assertIn('https://192.168.99.100:2376', commercial_invoice.container_ships.get('default').keys())
+        self.assertIn('https://192.168.99.100:2376', commercial_invoice.container_ships.get('export').keys())
+        self.assertIn('https://redis_srv.example.com:2376', commercial_invoice.container_ships.get('redis_srv').keys())

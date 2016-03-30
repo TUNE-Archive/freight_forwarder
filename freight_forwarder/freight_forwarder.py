@@ -10,7 +10,7 @@ import requests
 import psutil
 from yaml.representer import SafeRepresenter
 
-from .utils                 import normalize_keys, parse_hostname, logger
+from .utils                 import normalize_keys, parse_hostname, logger, normalize_value
 from .commercial_invoice    import CommercialInvoice
 from .config                import Config, ACTIONS_SCHEME, ConfigUnicode
 
@@ -369,7 +369,7 @@ class FreightForwarder(object):
         if commercial_invoice.transport_method == 'export':
             host_alias = commercial_invoice.transport_method
         else:
-            host_alias = commercial_invoice.transport_service.name
+            host_alias = normalize_value(commercial_invoice.transport_service.name).replace('-', '_')
 
         fleet = commercial_invoice.container_ships.get(
             host_alias,
