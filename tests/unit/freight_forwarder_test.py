@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
+
 from tests import unittest, mock
 from mock import call
 
@@ -88,7 +89,6 @@ class FreightForwarderTest(unittest.TestCase):
         self.assertTrue(test_deployment)
 
         # Validate output of logging to ensure the correct host is output to the user
-        calls = [call('Running deploy'),
+        calls = [call('Running deploy.'),
                  call('dispatching service: ffbug-example-tomcat-test on host: https://192.168.99.100:2376.')]
-        self.assertLogs(logger=mock_logger, level='INFO')
         mock_logger.info.assert_has_calls(calls)
