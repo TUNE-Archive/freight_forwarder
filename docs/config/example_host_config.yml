@@ -1,0 +1,22 @@
+---
+# environments definition
+environments:
+  # data center definition
+  development:
+
+    # service alias
+    elasticsearch:
+    # Docker image to use for service.
+      image: 'registry_alias/library/elasticsearch:latest'
+      ulimits:
+        - name: memlock
+          soft: 3000000
+          hard: 3000000
+      log_config:
+        type: syslog
+        config:
+          syslog-tag: 'elasticsearch-data'
+          syslog-facility: 'local6'
+
+
+

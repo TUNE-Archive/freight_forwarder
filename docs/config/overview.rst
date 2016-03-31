@@ -412,10 +412,21 @@ log_config            False    dict          json-file                | Defined 
 
 ulimits               False    dict          None                     | Defined user process resource limits for the
                                                                       | containers run time environment
+                                                                      |
+                                                                      | Example:
+                                                                      |
+                                                                      | ulimits:
+                                                                      |   - name: memlock
+                                                                      |    soft: 3000000
+                                                                      |    hard: 3000000
 
 restart_policy        False    dict          {}                       | This defines the behavior of the container
                                                                       | on failure
 ===================== ======== ============= ======================== =============================================================
+
+.. literalinclude:: ./example_host_config.yml
+    :language: yaml
+    :linenos:
 
 Container Config Properties
 ===========================
