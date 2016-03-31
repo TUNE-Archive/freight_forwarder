@@ -234,14 +234,14 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
         hosts = self.freight_forwarder._config.get('hosts', 'environments', 'development', 'local')
         del hosts['default']
 
-        commercial_invoice = self.freight_forwarder.commercial_invoice(
+        self.freight_forwarder.commercial_invoice(
             action='deploy',
             data_center='local',
             environment='development',
             transport_service='tomcat-test'
         )
         self.assertEqual(mock_os.getenv.call_count, 3)
-        calls =  [call('DOCKER_TLS_VERIFY'), call('DOCKER_CERT_PATH'), call('DOCKER_HOST')]
+        calls = [call('DOCKER_TLS_VERIFY'), call('DOCKER_CERT_PATH'), call('DOCKER_HOST')]
         mock_os.getenv.assert_has_call(calls, any_order=True)
 
     @mock.patch.object(CommercialInvoice, '_create_registries', autospec=True)
@@ -262,7 +262,6 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
             transport_service='tomcat-test'
         )
         container_ships = commercial_invoice.container_ships.keys()
-        config_hosts = self.freight_forwarder.config.environments['staging']['local']['hosts'].keys()
         self.assertEqual(len(commercial_invoice.container_ships), 4)
         self.assertIn('tomcat_test', container_ships)
         self.assertIn('redis_srv', container_ships)

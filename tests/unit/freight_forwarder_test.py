@@ -29,7 +29,7 @@ class FreightForwarderTest(unittest.TestCase):
 
     @mock.patch('freight_forwarder.freight_forwarder.CommercialInvoice', create=True)
     def test_commercial_invoice_export_and_deploy_service(self, mock_commercial_invoice):
-        commercial_invoice = self.freight_forwarder.commercial_invoice(
+        self.freight_forwarder.commercial_invoice(
             action='export',
             data_center='local',
             environment='development',
@@ -37,7 +37,7 @@ class FreightForwarderTest(unittest.TestCase):
         )
         commercial_invoice_services = mock_commercial_invoice.call_args[1].get('services')
         self.assertEqual(commercial_invoice_services['tomcat_test']['build'],
-                          './Dockerfile')
+                         './Dockerfile')
         self.assertIsInstance(commercial_invoice_services['tomcat_test'], ConfigDict)
 
         self.assertNotIn('image', commercial_invoice_services['tomcat_test'].values())
