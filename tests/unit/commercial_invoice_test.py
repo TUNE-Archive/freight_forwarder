@@ -214,7 +214,7 @@ class CommercialInvoiceCreateContainershipsTest(unittest.TestCase):
             action='deploy',
             data_center='local',
             environment='development',
-            transport_service='tomcat_test'
+            transport_service='tomcat-test'
         )
         self.assertEqual(len(commercial_invoice.container_ships), 3)
         self.assertIn('tomcat_test', commercial_invoice.container_ships.keys())

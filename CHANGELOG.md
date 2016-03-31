@@ -1,6 +1,10 @@
 # Change Log
 #### All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+## [1.0.3] - 2016-03-31
+* host service definition normalized to match service alias allowing for all host container ships to be 
+  referenced by the correct alias
+
 ## [1.0.2] - 2016-03-24
 * Resolved a bug where an export operation was using an image declaration from the same `deploy` environment 
   instead of export definition
