@@ -184,10 +184,11 @@ class HostConfig(object):
             self._cap_add = self._create_capabilities_list(value)
 
             for capability in self._cap_add:
-                if capability in self._cap_drop:
-                    raise ValueError(
-                        "circular reference in cap_add. please remove {0} from either cap_add or cap_drop".format(capability)
-                    )
+                if hasattr(self, '_cap_drop'):
+                    if capability in self._cap_drop:
+                        raise ValueError(
+                            "circular reference in cap_add. please remove {0} from either cap_add or cap_drop".format(capability)
+                        )
 
     @property
     def cap_drop(self):
@@ -201,10 +202,11 @@ class HostConfig(object):
             self._cap_drop = self._create_capabilities_list(value)
 
             for capability in self._cap_drop:
-                if capability in self._cap_add:
-                    raise ValueError(
-                        "circular reference in cap_add. please remove {0} from either cap_add or cap_drop".format(capability)
-                    )
+                if hasattr(self, '_cap_add'):
+                    if capability in self._cap_add:
+                        raise ValueError(
+                            "circular reference in cap_add. please remove {0} from either cap_add or cap_drop".format(capability)
+                        )
 
     @property
     def cgroup_parent(self):
