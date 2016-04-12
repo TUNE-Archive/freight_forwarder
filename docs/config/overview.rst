@@ -417,6 +417,10 @@ restart_policy        False    dict          {}                       | This def
                                                                       | on failure
 ===================== ======== ============= ======================== =============================================================
 
+.. literalinclude:: ./example_host_config.yml
+    :language: yaml
+    :linenos:
+
 Container Config Properties
 ===========================
 
