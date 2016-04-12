@@ -13,13 +13,13 @@ environments:
         # define default hosts.
         default:
           - address: "https://192.168.99.100:2376"
-            sslCertPath: "/Users/alexb/.docker/machine/machines/ff01-dev"
+            ssl_cert_path: "/Users/alexb/.docker/machine/machines/ff01-dev"
             verify: false
 
          # define host to use during export
          export:
            - address: "https://your-ci-server.sea1.office.priv:2376"
-             sslCertPath: "/path/to/your/certs/"
+             ssl_cert_path: "/path/to/your/certs/"
              verify: false
 
       # define deploy command orderides
