@@ -1,7 +1,7 @@
 # Change Log
 #### All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-## [1.0.3] - 2016-03-31
+## [1.0.3-dev] - 2016-04-12
 * host service definition normalized to match service alias allowing for all host container ships to be 
   referenced by the correct alias
 
