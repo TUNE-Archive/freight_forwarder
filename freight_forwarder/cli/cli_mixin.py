@@ -29,7 +29,7 @@ class CliMixin(object):
             required=True,
             type=str,
             default='development',
-            help='The environment the environment to run tests in. example: development, test, or production'
+            help='The environment to run tests in. example: development, test, or production'
         )
 
         self._parser.add_argument(
