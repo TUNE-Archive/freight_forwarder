@@ -1,7 +1,10 @@
 # Change Log
 #### All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-## [1.0.3-dev] - 2016-04-12
+## [1.0.4-dev] - 2016-05-23
+* resolved bug in logic of `FreightForwarder.export` to verify `bill_of_lading` before starting the export operation
+
+## [1.0.3-dev] - 2016-05-18
 * host service definition normalized to match service alias allowing for all host container ships to be 
   referenced by the correct alias
 
