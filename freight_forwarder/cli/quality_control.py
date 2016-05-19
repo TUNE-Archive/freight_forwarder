@@ -102,7 +102,7 @@ class QualityControlCommand(CliMixin):
 
         # create new freight forwarder object
         # config_override=manifest_override
-        freight_forwarder = FreightForwarder()
+        freight_forwarder = FreightForwarder(verbose=args.verbose)
 
         # create commercial invoice this is the contact given to freight forwarder dispatch containers and images
         commercial_invoice = freight_forwarder.commercial_invoice(

@@ -70,7 +70,7 @@ class DeployCommand(CliMixin):
             raise TypeError(logger.error("args should of an instance of argparse.Namespace"))
 
         # create new freight forwarder
-        freight_forwarder = FreightForwarder()
+        freight_forwarder = FreightForwarder(verbose=args.verbose)
 
         # create commercial invoice this is the contact given to freight forwarder to dispatch containers and images
         commercial_invoice = freight_forwarder.commercial_invoice(
