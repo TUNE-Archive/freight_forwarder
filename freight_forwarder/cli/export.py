@@ -162,7 +162,7 @@ class ExportCommand(CliMixin):
                     raise ValueError("Incorrect type defined. Required value: yes")
 
         # create new freight forwarder to create a commercial_invoice and export goods.
-        freight_forwarder = FreightForwarder()
+        freight_forwarder = FreightForwarder(verbose=args.verbose)
 
         # create commercial invoice this is the contact given to freight forwarder dispatch containers and images
         commercial_invoice = freight_forwarder.commercial_invoice(

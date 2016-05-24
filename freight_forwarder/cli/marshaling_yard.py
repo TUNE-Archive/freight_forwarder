@@ -80,7 +80,7 @@ class MarshalingYardTags(object):
 
     def _tags(self, args, **extra_args):
         # create config
-        config = Config(verbose=False)
+        config = Config(verbose=args.verbose)
 
         # validate config file
         config.validate()
@@ -164,7 +164,7 @@ class MarshalingYardSearch(object):
 
     def _images(self, args, **extra_args):
         # create config
-        config = Config(verbose=False)
+        config = Config(verbose=args.verbose)
 
         # validate config file
         config.validate()
