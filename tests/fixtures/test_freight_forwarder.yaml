@@ -24,6 +24,11 @@ es-server:
   ports:
     - 8080:8080
 
+redis_srv:
+  image: tune_dev/tuneplatform/redis-server:latest
+  ports:
+    - 6379:6379
+
 environments:
   development:
     local:
@@ -55,3 +60,17 @@ environments:
             - 8080:8080
           links:
             - es-server
+
+  staging:
+    local:
+      hosts:
+        default: &staging_default
+          - address: https://192.168.99.100:2376
+            ssl_cert_path: /replace/me
+            verify: false
+        export: *staging_default
+        tomcat-test: *staging_default
+        redis_srv:
+          - address: https://redis_srv.example.com:2376
+            ssl_cert_path: /replace/me
+            verify: false

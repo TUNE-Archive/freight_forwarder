@@ -498,7 +498,7 @@ class HostConfig(object):
             if value:
                 for ulimit in value:
                     if not isinstance(ulimit, dict):
-                        raise TypeError('each ulimit must be a dict: { "Name": "nofile", "Soft": 1024, "Hard", 2048 }}')
+                        raise TypeError('each ulimit must be a dict: { "name": "nofile", "soft": 1024, "hard", 2048 }}')
 
                     name = ulimit.get('name')
                     hard = ulimit.get('hard')
