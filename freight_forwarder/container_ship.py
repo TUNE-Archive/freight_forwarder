@@ -134,7 +134,7 @@ class ContainerShip(object):
         self._service_map(service, anonymous, descending=False)
 
     def containers(self):
-        self._client_session.containers(all=1)
+        return self._client_session.containers(all=1)
 
     def load_containers(self, service, configs, use_cache):
         """
