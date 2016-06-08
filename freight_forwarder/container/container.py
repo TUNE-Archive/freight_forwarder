@@ -109,8 +109,27 @@ class Container(object):
 
     def delete(self, remove_volumes=False, links=False, force=False):
         """
+        Delete the container on the host. Inspects the container to determine if it is in a `dead` state. This is
+        verified to take alterntaive action and not error out when deploying to a host
         """
         response = None
+
+        try:
+            if self.state()['dead']:
+                logger.warning('\'{0}\' will not be deleted. '
+                               'Container has been marked in a dead state. id: \'{1}\'. '
+                               'host: \'{2}\''.format(self.name, self.id, self.client.base_url))
+                return response
+        except APIError as e:
+            if e.response.status_code == 404:
+                logger.info('is unable to located.', extra={'formatter': 'container', 'container': self.name})
+            else:
+                logger.exception("Docker APIError exception raised when querying container, \'{0}\' - id: \'{1}\'. "
+                                 "host: \'{2}\'.\n"
+                                 "Exception: {3}.".format(self.name, self.id, self.client.base_url, e),
+                                 exc_info=True)
+            return response
+
         if self.state()["running"]:
             self.stop()
 
@@ -120,8 +139,16 @@ class Container(object):
         except APIError as e:
             if e.response.status_code == 404:
                 logger.info('is unable to located.', extra={'formatter': 'container', 'container': self.name})
+                return response
             else:
-                raise APIError("Docker Error: {0}".format(e.explanation), e.response)
+                logger.exception('Exception raised when deleting \'{0}\'. id: \'{1}\'. host: \'{2}\'\n'
+                                 'Exception: {3}'.format(self.name,
+                                                         self.id,
+                                                         self.client.base_url,
+                                                         APIError("Docker APIError: {0}".format(e.explanation),
+                                                                  e.response)),
+                                 exc_info=True)
+                return response
 
         return response
 

@@ -62,14 +62,110 @@ class ContainerTest(unittest.TestCase):
 
     @mock.patch.object(docker.api.ContainerApiMixin, 'inspect_container')
     @mock.patch.object(docker.api.ContainerApiMixin, 'remove_container')
-    def test_delete(self, mock_docker_container_remove, mock_docker_container_inspect):
-        mock_docker_container_inspect.return_value = {'state': {'running': False}}
+    def test_delete_with_container_stopped(self, mock_docker_container_remove, mock_docker_container_inspect):
+        mock_docker_container_inspect.return_value = {
+            'State': {
+                'pid': 9789,
+                'paused': False,
+                'restarting': False,
+                'oom_killed': False,
+                'dead': False,
+                'exit_code': 0,
+                'started_at': '2016-05-16T06:18:45.930862748Z',
+                'running': False,
+                'finished_at': '2016-05-16T06:06:00.382539463Z',
+                'error': ''
+                }
+            }
         mock_docker_container_remove.return_value = {}
         with mock.patch.object(Container, '_find_by_id'):
             container = Container(self.docker_client, name='foo', image='bar', id='123')
             container.id = '123'
             container.name = 'foo'
             self.assertEqual(container.delete(), {})
+
+    @mock.patch.object(docker.api.ContainerApiMixin, 'stop')
+    @mock.patch.object(docker.api.ContainerApiMixin, 'inspect_container')
+    @mock.patch.object(docker.api.ContainerApiMixin, 'remove_container')
+    def test_delete_with_container_running(self,
+                                           mock_docker_container_remove,
+                                           mock_docker_container_inspect,
+                                           mock_docker_container_stop):
+        mock_docker_container_inspect.side_effect = [
+            {
+                'State': {
+                    'pid': 9789,
+                    'paused': False,
+                    'restarting': False,
+                    'oom_killed': False,
+                    'dead': False,
+                    'exit_code': 0,
+                    'started_at': '',
+                    'running': True,
+                    'finished_at': '',
+                    'error': ''
+                }
+            },
+            {
+                'State': {
+                    'pid': 9789,
+                    'paused': False,
+                    'restarting': False,
+                    'oom_killed': False,
+                    'dead': False,
+                    'exit_code': 0,
+                    'started_at': '',
+                    'running': True,
+                    'finished_at': '',
+                    'error': ''
+                }
+            },
+            {
+                'State': {
+                    'pid': 9789,
+                    'paused': False,
+                    'restarting': False,
+                    'oom_killed': False,
+                    'dead': False,
+                    'exit_code': 0,
+                    'started_at': '',
+                    'running': False,
+                    'finished_at': '',
+                    'error': ''
+                }
+            }
+        ]
+        mock_docker_container_remove.return_value = {}
+        mock_docker_container_stop.return_value = {}
+        with mock.patch.object(Container, '_find_by_id'):
+            container = Container(self.docker_client, name='foo', image='bar', id='123')
+            container.id = '123'
+            container.name = 'foo'
+            self.assertEqual(container.delete(), {})
+
+    @mock.patch.object(docker.api.ContainerApiMixin, 'inspect_container')
+    @mock.patch.object(docker.api.ContainerApiMixin, 'remove_container')
+    def test_delete_with_container_dead(self, mock_docker_container_remove, mock_docker_container_inspect):
+        mock_docker_container_inspect.return_value = {
+            'State': {
+                'pid': 9789,
+                'paused': False,
+                'restarting': False,
+                'oom_killed': False,
+                'dead': True,
+                'exit_code': 137,
+                'started_at': '2016-05-16T06:18:45.930862748Z',
+                'running': False,
+                'finished_at': '2016-05-16T06:06:00.382539463Z',
+                'error': ''
+            }
+        }
+        mock_docker_container_remove.return_value = {}
+        with mock.patch.object(Container, '_find_by_id'):
+            container = Container(self.docker_client, name='foo', image='bar', id='123')
+            container.id = '123'
+            container.name = 'foo'
+            self.assertEqual(container.delete(), None)
 
     def test_delete_failure(self):
         pass
